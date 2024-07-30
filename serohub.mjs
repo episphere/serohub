@@ -9,7 +9,8 @@ class seroHub{
 
 
 const localForage = await (await import('https://esm.sh/localforage@1.10.0')).default
-
+const JSZip = (await import('https://esm.sh/jszip@3.10.1'))
+//const ZIP = 
 
 const seroHub={
     createdAt:Date()
