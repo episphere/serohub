@@ -12,6 +12,6 @@ console.log(`index.js loaded at\n${Date()}`);
         seroHub = await localForage.getItem('seroHub')
     }
     // const seroHub = await (await import(`https://episphere.github.io/serohub/serohub.mjs`)).seroHub
-    seroHubMsg.innerHTML=`> ${seroHub.dt.seroprevalences.length} records loaded, ${Date().toString().slice(0,24)}`
+    seroHubMsg.innerHTML=`> ${seroHub.seroprevalence.seroprevalences.length} records loaded, ${Date().toString().slice(0,24)}`
     return seroHub
 })()
