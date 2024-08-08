@@ -1,6 +1,5 @@
 # serohub
-A javascript sdk for covid19serohub.nih.gov data:
+A javascript sdk for https://covid19serohub.nih.gov data:
 
-* Live application at https://episphere.github.io
+* Live application at https://episphere.github.io/serohub
 * Data as json at :  https://episphere.github.io/serohub/seroprevalence.json.zip
-* Data as excel at https://episphere.github.io/serohub/COVID-19_SeroHub_Seroprevalences.xlsx
