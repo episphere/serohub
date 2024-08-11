@@ -1,4 +1,5 @@
-const Plotly = (await import("https://esm.sh/plotly.js@2.34.0")).default
+//const Plotly = (await import("https://esm.sh/plotly.js@2.34.0")).default
+const Plotly = (await import("https://episphere.github.io/plotly/esm.mjs")).esm
 const localForage = (await import('https://esm.run/localforage@1.9.0/src/localforage.js')).default
 const url = 'https://episphere.github.io/serohub/seroprevalence.json.zip'
 let seroHub={
@@ -6,6 +7,7 @@ let seroHub={
     loadedFrom:url
 }
 let dt = await localForage.getItem('seroHub_Prevalence')
+//if(true){
 if(!dt){
     const loadZip = (await import('https://episphere.github.io/serohub/loadZip.mjs'))
     dt = await loadZip.loadZippedFiles(url)
