@@ -1,10 +1,19 @@
-//const Plotly = (await import("https://esm.sh/plotly.js@2.34.0")).default
+
+let Plotly
+if(typeof(define)!='undefined'){ //commonjs
+    Plotly = await require("https://cdn.plot.ly/plotly-latest.min.js")
+}else{ // esm
+    Plotly = (await import("https://esm.sh/plotly.js@2.34.0")).default
+}
+//debugger
+//console.log(`ploting with`,Plotly)
 //const Plotly = (await import("https://episphere.github.io/plotly/esm.mjs")).esm
 const localForage = (await import('https://esm.run/localforage@1.9.0/src/localforage.js')).default
 const url = 'https://episphere.github.io/serohub/seroprevalence.json.zip'
 let seroHub={
     loadedAt:Date(),
-    loadedFrom:url
+    loadedFrom:url,
+    Plotly:Plotly
 }
 let dt = await localForage.getItem('seroHub_Prevalence')
 //if(true){
