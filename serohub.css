@@ -40,16 +40,6 @@ p {
   line-height: 1.4em;
 }
 
-
-code {
-  color:brown;
-  font-family:var(--family);
-  /*font-family:var(--family);
-  font-style: italic;*/
-  background-color:white;
-}
-
-
 button {
   border-radius: 10px;
   font-size:medium;

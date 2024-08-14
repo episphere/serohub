@@ -5,15 +5,15 @@ if(typeof(define)=='undefined'){
 }else{
     define(['https://cdn.plot.ly/plotly-2.34.0.min.js'],function(mod){Plotly=mod})
 }
-
-//debugger
-//console.log(`ploting with`,Plotly)
+// debugger
+console.log(`ploting with`,Plotly)
 //const Plotly = (await import("https://episphere.github.io/plotly/esm.mjs")).esm
 const localForage = (await import('https://esm.run/localforage@1.9.0/src/localforage.js')).default
 const url = 'https://episphere.github.io/serohub/seroprevalence.json.zip'
 let seroHub={
     loadedAt:Date(),
     loadedFrom:url,
+    Plotly:Plotly
 }
 let dt = await localForage.getItem('seroHub_Prevalence')
 //if(true){
