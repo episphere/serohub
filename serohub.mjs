@@ -1,17 +1,17 @@
 
 let Plotly
+/*
 try{
     Plotly = (await import("https://esm.sh/plotly.js@2.34.0")).default
 } catch(err){
     Plotly = await require("https://cdn.plot.ly/plotly-2.34.0.min.js")
 }
-/*
+*/
 if(typeof(define)=='undefined'){
     Plotly = (await import("https://esm.sh/plotly.js@2.34.0")).default
 }else{
     define(['https://cdn.plot.ly/plotly-2.34.0.min.js'],[function(mod){Plotly=mod}])
 }
-*/
 console.log(`ploting with`,Plotly)
 //const Plotly = (await import("https://episphere.github.io/plotly/esm.mjs")).esm
 const localForage = (await import('https://esm.run/localforage@1.9.0/src/localforage.js')).default
