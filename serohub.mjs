@@ -46,8 +46,35 @@ seroHub.uniqueValues=function(variable='age'){
     return [... new Set(seroHub.seroprevalence.seroprevalences.map(row=>row[variable]))]
 }
 // Plots
+seroHub.plotSeroprevalence=function(div=seroHubDiv){ // values vs time
+    console.log('ploting at ',div)
+    // start and end of each collection
+    let xx = seroHub.seroprevalence.seroprevalences.map(x=>[Date.parse(x.collection_start),Date.parse(x.collection_end)])
+    let yy = seroHub.seroprevalence.seroprevalences.map(x=>[x.seroprevalence,x.seroprevalence])
+    let traces=xx.slice(0,1000).map((z,i)=>{
+        return {
+            x:[xx[i][0],xx[i][1]],
+            y:[yy[i][0],yy[i][1]]
+        }
+    })
+    let layout = {
+        title:'lala',
+        width:1000,
+        height:1000
+    }
+    Plotly.newPlot(div,traces,layout)
+}
 
-
+//serohub.dt = seroHub.seroprevalence.seroprevalences // array
+/*
+serohub.group = function(xx=seroHub.seroprevalence.seroprevalences,attr='antigen_target',vals){
+    if(!vals){
+        vals = seroHub.uniqueValues(attr)
+    }
+    vals
+    return grp 
+}
+*/
 
 export{
     seroHub
