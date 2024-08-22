@@ -48,6 +48,10 @@ seroHub.uniqueValues=function(variable='age'){
 // Plots
 
 seroHub.plotSeroprevalence=function(div=seroHubDiv){ // values vs time
+    if(!div){
+        div = document.createElement('div')
+        document.body.appendChild(div)
+    }
     console.log('ploting at ',div)
     // start and end of each collection
     // let xx = seroHub.seroprevalence.seroprevalences.map(x=>[Date.parse(x.collection_start),Date.parse(x.collection_end)])
@@ -60,7 +64,7 @@ seroHub.plotSeroprevalence=function(div=seroHubDiv){ // values vs time
         }
     })
     let layout = {
-        title:'lala',
+        title:'test plot',
         width:1000,
         height:1000
     }
@@ -70,14 +74,44 @@ seroHub.plotSeroprevalence=function(div=seroHubDiv){ // values vs time
 seroHub.byGroup = function(xx=seroHub.seroprevalence.seroprevalences,attr='antigen_target',vals){
     if(!vals){vals = seroHub.uniqueValues(attr)}
     let grp = {}
-    vals.forEach(v=>{
+    vals.sort().forEach(v=>{
         grp[v]=xx.filter(x=>(x[attr]==v))
     })
     return grp
 }
 
-seroHub.plotByGroup = function(grps=seroHub.byGroup()){
-    let traces=[]  
+seroHub.plotByGroup = function(div,grps=seroHub.byGroup()){
+    if(!div){
+        div = document.createElement('div')
+        document.body.appendChild(div)
+    }
+    let traces = []
+    Object.keys(grps).forEach((grp,i)=>{
+        traces.push({
+            x:grps[grp].map(x=>x['collection_midpoint']),
+            y:grps[grp].map(x=>x['seroprevalence']),
+            type:'scatter',
+            name:grp,
+            mode:'markers',
+            marker:{
+                opacity:0.5,
+                symbol:i,   //seroHub.Plotly.PlotSchema.get().traces.scatter.attributes.marker.symbol.values
+                size:10,
+            }
+        })
+    })
+    let layout = {
+        title:`Prevalence over time, by antigen target`,
+        width:1000,
+        height:1000,
+        xaxis:{
+            title:`Midpoint collection date`
+        },
+        yaxis:{
+            title:`Prevalence`
+        },
+    }
+    Plotly.newPlot(div,traces,layout)
 }
 
 //serohub.dt = seroHub.seroprevalence.seroprevalences // array
