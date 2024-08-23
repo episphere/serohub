@@ -29,6 +29,11 @@ if(!dt){
     localForage.setItem('seroHub_Prevalence',dt)
 }
 seroHub.seroprevalence=dt['seroprevalence.json']
+// add row number
+seroHub.seroprevalence.seroprevalences=seroHub.seroprevalence.seroprevalences.map((s,i)=>{
+    s.row=i+1
+    return s
+})
 // transpose
 seroHub.variables = Object.keys(seroHub.seroprevalence.seroprevalences[0])
 seroHub.values=function(variable='age'){
@@ -80,23 +85,29 @@ seroHub.byGroup = function(xx=seroHub.seroprevalence.seroprevalences,attr='antig
     return grp
 }
 
-seroHub.plotByGroup = function(div,grps=seroHub.byGroup()){
-    if(!div){
+seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
+    if(!div){ //main div
         div = document.createElement('div')
         document.body.appendChild(div)
+    }
+    if(!divData){
+        divData = document.createElement('div')
+        div.parentElement.appendChild(divData)
+        divData.innerHTML='full row information when you nouse hover the plot'
     }
     let traces = []
     Object.keys(grps).forEach((grp,i)=>{
         traces.push({
             x:grps[grp].map(x=>x['collection_midpoint']),
             y:grps[grp].map(x=>x['seroprevalence']),
+            text:grps[grp].map((x,j)=>`row ${x.row} (${x.collection_state}, age: ${x.age})`),
             type:'scatter',
             name:grp,
             mode:'markers',
             marker:{
                 opacity:0.5,
-                symbol:i,   //seroHub.Plotly.PlotSchema.get().traces.scatter.attributes.marker.symbol.values
-                size:10,
+                symbol:['circle-open','square-open','cross-open','hexagon-open','triangle-up-open','triangle-down-open','triangle-left-open','triangle-right-open','diamond-open'][i],   //seroHub.Plotly.PlotSchema.get().traces.scatter.attributes.marker.symbol.values
+                size:7,
             }
         })
     })
@@ -112,6 +123,30 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup()){
         },
     }
     Plotly.newPlot(div,traces,layout)
+        .then(function(gd) {
+            gd.on('plotly_hover',
+            function(data) {
+                // Function to execute on hover
+                // console.log(data);
+                //divData.innerHTML=seroHub.seroprevalence.seroprevalences[parseInt('row 35957 (California, age: )'.match(/row ([0-9]+)/)[1])].row
+                let i = grps[data.points[0].fullData.name][data.points[0].pointIndex].row
+                // divData.innerHTML=JSON.stringify(seroHub.seroprevalence.seroprevalences[i],null,3)
+                divData.innerHTML='' // clear
+                let taRow = document.createElement('textarea')
+                taRow.id="taRow"
+                taRow.style.backgroundColor='white'
+                taRow.style.color='navy'
+                taRow.style.fontSize=10
+                divData.appendChild(taRow)
+                taRow.style.width='100%'
+                taRow.style.height='100em'
+                taRow.value=JSON.stringify(seroHub.seroprevalence.seroprevalences[i],null,3)
+            });
+        })
+        //.then(function(gd) {
+        //    gd.on('plotly_click',
+        //    function(data) {console.log(data)})})
+    
 }
 
 //serohub.dt = seroHub.seroprevalence.seroprevalences // array
