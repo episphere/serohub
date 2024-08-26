@@ -94,7 +94,7 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
     if(!divData){
         divData = document.createElement('div')
         div.parentElement.appendChild(divData)
-        divData.innerHTML='Summary row information pops up when you mouse hover the plot above. When you click, the corresponding full entry is displayed here.'
+        divData.innerHTML='Summary row information pops up when you mouse hover the plot above. When you click, the corresponding full entry will be displayed here.'
     }
     let traces = []
     Object.keys(grps).forEach((grp,i)=>{
