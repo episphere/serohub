@@ -1,4 +1,6 @@
 
+console.log(`seroHub ES6 module imported at,\n${Date()}`)
+
 let Plotly
 /*
 try{
@@ -140,6 +142,14 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
                 // divData.innerHTML=JSON.stringify(seroHub.seroprevalence.seroprevalences[i],null,3)
                 divData.innerHTML='' // clear
                 let taRow = document.createElement('textarea')
+                let btDownload = document.createElement('button')
+                //console.log(btDownload)
+                btDownload.id="btDownload"
+                btDownload.innerHTML='download entry'
+                btDownload.onclick=function(){
+                    console.table(taRow.value)
+                }
+                divData.appendChild(btDownload)
                 taRow.id="taRow"
                 taRow.style.backgroundColor='white'
                 taRow.style.color='navy'
