@@ -30,12 +30,10 @@ if(!dt){
 }
 seroHub.seroprevalence=dt['seroprevalence.json']
 // add row number
-seroHub.seroprevalence.seroprevalences=seroHub.seroprevalence.seroprevalences.map((s,i)=>{
-    s.row=i+1
-    return s
-})
-// transpose
+seroHub.seroprevalence.seroprevalences.forEach((x,i)=>{seroHub.seroprevalence.seroprevalences[i].row=i+1})
+// list variables
 seroHub.variables = Object.keys(seroHub.seroprevalence.seroprevalences[0])
+// extract values of an attribute
 seroHub.values=function(variable='age'){
     if(typeof(variable)=='number'){
         variable = seroHub.variables[variable]
@@ -43,6 +41,7 @@ seroHub.values=function(variable='age'){
     console.log(`reading variable "${variable}"`)
     return seroHub.seroprevalence.seroprevalences.map(row=>row[variable])
 }
+// unique values for a variable
 seroHub.uniqueValues=function(variable='age'){
     if(typeof(variable)=='number'){
         variable = seroHub.variables[variable]
@@ -93,14 +92,22 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
     if(!divData){
         divData = document.createElement('div')
         div.parentElement.appendChild(divData)
-        divData.innerHTML='full row information when you nouse hover the plot'
+        divData.innerHTML='Summary row information when you nouse hover the plot, full entry when you click.'
     }
     let traces = []
     Object.keys(grps).forEach((grp,i)=>{
         traces.push({
             x:grps[grp].map(x=>x['collection_midpoint']),
             y:grps[grp].map(x=>x['seroprevalence']),
-            text:grps[grp].map((x,j)=>`row ${x.row} (${x.collection_state}, age: ${x.age})`),
+            text:grps[grp].map(x=>`row: ${x.row}, state:${x.collection_state}, age: ${x.age})`),
+            //text:grps[grp].map((x,j)=>`row ${x.row+1} (${x.collection_state}, age: ${x.age})`),
+            /*
+            text:grps[grp].map((x,j)=>{
+                //return `(${JSON.stringify(x,null,3)})`
+                //x=seroHub.seroprevalence.seroprevalences[x.row-1]
+                return `row: ${x.row+1}, state: ${x.collection_state}`
+            }),
+            */
             type:'scatter',
             name:grp,
             mode:'markers',
@@ -124,12 +131,12 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
     }
     Plotly.newPlot(div,traces,layout)
         .then(function(gd) {
-            gd.on('plotly_hover',
+            gd.on('plotly_click',
             function(data) {
                 // Function to execute on hover
                 // console.log(data);
                 //divData.innerHTML=seroHub.seroprevalence.seroprevalences[parseInt('row 35957 (California, age: )'.match(/row ([0-9]+)/)[1])].row
-                let i = grps[data.points[0].fullData.name][data.points[0].pointIndex].row
+                let i = grps[data.points[0].fullData.name][data.points[0].pointIndex].row-1
                 // divData.innerHTML=JSON.stringify(seroHub.seroprevalence.seroprevalences[i],null,3)
                 divData.innerHTML='' // clear
                 let taRow = document.createElement('textarea')
