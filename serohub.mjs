@@ -77,7 +77,14 @@ seroHub.plotSeroprevalence=function(div=seroHubDiv){ // values vs time
     Plotly.newPlot(div,traces,layout)
 }
 
-seroHub.byGroup = function(xx=seroHub.seroprevalence.seroprevalences,attr='antigen_target',vals){
+seroHub.byGroup = function(xx,attr,vals){
+    if(typeof(xx)=='string'){ // in case this is already about seroHub, this will be the attribute
+        vals=attr
+        attr=xx
+        xx=seroHub.seroprevalence.seroprevalences
+    }
+    if(!xx){xx=seroHub.seroprevalence.seroprevalences}
+    if(!attr){attr='antigen_target'}
     if(!vals){vals = seroHub.uniqueValues(attr)}
     let grp = {}
     vals.sort().forEach(v=>{
@@ -102,14 +109,6 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
             x:grps[grp].map(x=>x['collection_midpoint']),
             y:grps[grp].map(x=>x['seroprevalence']),
             text:grps[grp].map(x=>`row: ${x.row}, state:${x.collection_state}, age: ${x.age})`),
-            //text:grps[grp].map((x,j)=>`row ${x.row+1} (${x.collection_state}, age: ${x.age})`),
-            /*
-            text:grps[grp].map((x,j)=>{
-                //return `(${JSON.stringify(x,null,3)})`
-                //x=seroHub.seroprevalence.seroprevalences[x.row-1]
-                return `row: ${x.row+1}, state: ${x.collection_state}`
-            }),
-            */
             type:'scatter',
             name:grp,
             mode:'markers',
