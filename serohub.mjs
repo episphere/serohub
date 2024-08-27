@@ -1,3 +1,17 @@
+function saveFile(txt=':-)',rowFileName="hello.txt") { // x is the content of the file
+	var bb = new Blob([txt]);
+   	var url = URL.createObjectURL(bb);
+	var a = tsv
+   	a.href=url;
+	if (fileName){
+		if(typeof(fileName)=="string"){ // otherwise this is just a boolean toggle or something of the sort
+			a.download=fileName;
+		}
+		a.click() // then download it automatically 
+	} 
+	return a
+}
+
 
 console.log(`seroHub ES6 module imported at,\n${Date()}`)
 
@@ -142,13 +156,13 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
                 divData.innerHTML='' // clear
                 let taRow = document.createElement('textarea')
                 let btDownload = document.createElement('button')
+                let fname = document.createElement('input')
+                fname.id="fname"
                 //console.log(btDownload)
                 btDownload.id="btDownload"
                 btDownload.innerHTML='download entry'
-                btDownload.onclick=function(){
-                    console.table(taRow.value)
-                }
                 divData.appendChild(btDownload)
+                divData.appendChild(fname)
                 taRow.id="taRow"
                 taRow.style.backgroundColor='white'
                 taRow.style.color='navy'
@@ -157,6 +171,11 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
                 taRow.style.width='100%'
                 taRow.style.height='100em'
                 taRow.value=JSON.stringify(seroHub.seroprevalence.seroprevalences[i],null,3)
+                fname.value=`row_${seroHub.seroprevalence.seroprevalences[i].row}.json`
+                btDownload.onclick=function(){
+                    saveFile(JSON.stringify(seroHub.seroprevalence.seroprevalences[i]),'lalaFile')
+                    //console.table(taRow.value)
+                }
             });
         })
         //.then(function(gd) {
