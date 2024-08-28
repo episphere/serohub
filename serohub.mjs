@@ -1,7 +1,7 @@
-function saveFile(txt=':-)',rowFileName="hello.txt") { // x is the content of the file
+function saveFile(txt=':-)',fileName="hello.txt") { // x is the content of the file
 	var bb = new Blob([txt]);
    	var url = URL.createObjectURL(bb);
-	var a = tsv
+	var a = document.createElement('a')
    	a.href=url;
 	if (fileName){
 		if(typeof(fileName)=="string"){ // otherwise this is just a boolean toggle or something of the sort
@@ -156,13 +156,13 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
                 divData.innerHTML='' // clear
                 let taRow = document.createElement('textarea')
                 let btDownload = document.createElement('button')
-                let fname = document.createElement('input')
-                fname.id="fname"
+                let rowFileName = document.createElement('input')
+                rowFileName.id="rowFileName"
                 //console.log(btDownload)
                 btDownload.id="btDownload"
                 btDownload.innerHTML='download entry'
                 divData.appendChild(btDownload)
-                divData.appendChild(fname)
+                divData.appendChild(rowFileName)
                 taRow.id="taRow"
                 taRow.style.backgroundColor='white'
                 taRow.style.color='navy'
@@ -171,9 +171,9 @@ seroHub.plotByGroup = function(div,grps=seroHub.byGroup(),divData){
                 taRow.style.width='100%'
                 taRow.style.height='100em'
                 taRow.value=JSON.stringify(seroHub.seroprevalence.seroprevalences[i],null,3)
-                fname.value=`row_${seroHub.seroprevalence.seroprevalences[i].row}.json`
+                rowFileName.value=`row_${seroHub.seroprevalence.seroprevalences[i].row}.json`
                 btDownload.onclick=function(){
-                    saveFile(JSON.stringify(seroHub.seroprevalence.seroprevalences[i]),'lalaFile')
+                    saveFile(JSON.stringify(seroHub.seroprevalence.seroprevalences[i]),rowFileName.value)
                     //console.table(taRow.value)
                 }
             });
